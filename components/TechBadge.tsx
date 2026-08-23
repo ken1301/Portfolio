@@ -56,21 +56,31 @@ const iconByTag: Record<string, SimpleIcon> = {
   Vite: siVite,
 };
 
-export function TechBadge({ tag }: { tag: string }) {
+export function TechIcon({ tag, size = 12 }: { tag: string; size?: number }) {
   const icon = iconByTag[tag];
 
   return (
-    <span className="tag tech-badge">
-      <span className="tech-icon" aria-hidden="true" style={icon ? { color: `#${icon.hex}` } : undefined}>
-        {icon ? (
-          <svg viewBox="0 0 24 24" role="presentation">
-            <path d={icon.path} />
-          </svg>
-        ) : (
-          <Code2 size={12} strokeWidth={1.8} />
-        )}
-      </span>
-      <span>{tag}</span>
+    <span className="tech-icon" aria-hidden="true" style={icon ? { color: `#${icon.hex}` } : undefined}>
+      {icon ? (
+        <svg viewBox="0 0 24 24" role="presentation" style={{ width: size, height: size }}>
+          <path d={icon.path} />
+        </svg>
+      ) : (
+        <Code2 size={size} strokeWidth={1.8} />
+      )}
     </span>
+  );
+}
+
+export function TechBadge({ tag, active = false, onClick }: { tag: string; active?: boolean; onClick?: () => void }) {
+  const className = `tag tech-badge ${active ? "active" : ""}`;
+  const content = <><TechIcon tag={tag} /><span>{tag}</span></>;
+
+  return onClick ? (
+    <button className={className} type="button" aria-pressed={active} onClick={onClick}>
+      {content}
+    </button>
+  ) : (
+    <span className={className}>{content}</span>
   );
 }

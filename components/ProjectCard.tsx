@@ -29,8 +29,23 @@ function ProjectImageSlot({ title, modal = false }: { title: string; modal?: boo
   );
 }
 
-export function ProjectCard({ project }: { project: ProjectCardData }) {
+function ProjectSystemPreview({ title, nodes }: { title: string; nodes: string[] }) {
+  return (
+    <div className="project-system-preview" role="img" aria-label={`${title} system flow preview`}>
+      <div className="project-system-track">
+        {nodes.map((node, index) => (
+          <span key={node} className="architecture-node">{node}</span>
+        )).flatMap((node, index, all) => index < all.length - 1 ? [node, <span className="architecture-arrow" aria-hidden="true" key={`${title}-preview-arrow-${index}`} />] : [node])}
+      </div>
+      <span className="project-system-readout">FLOW / {nodes.join(" → ")}</span>
+    </div>
+  );
+}
+
+export function ProjectCard({ project, activeSkill, onSkillSelect }: { project: ProjectCardData; activeSkill?: string | null; onSkillSelect?: (skill: string) => void }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [previewMode, setPreviewMode] = useState<"ui" | "system">("ui");
+  const isSkillMatch = !activeSkill || project.tags.includes(activeSkill);
 
   const handleCardClick = (event: ReactMouseEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest("a, button")) return;
@@ -65,23 +80,43 @@ export function ProjectCard({ project }: { project: ProjectCardData }) {
   return (
     <>
       <article
-        className="project-card"
+        className={`project-card ${activeSkill ? (isSkillMatch ? "skill-match" : "skill-dimmed") : ""}`}
         role="button"
         tabIndex={0}
         aria-label={`Open ${project.title} case study`}
+        data-skill-match={isSkillMatch}
         onClick={handleCardClick}
         onKeyDown={handleCardKeyDown}
       >
-        <div className="project-image-trigger">
-          <ProjectImageSlot title={project.title} />
-          <span className="project-image-status">VISUAL_PREVIEW <ChevronRight size={12} /></span>
+        <div className="project-preview">
+          <div className="preview-tabs" role="tablist" aria-label={`${project.title} preview modes`}>
+            <button
+              className={`preview-tab ${previewMode === "ui" ? "active" : ""}`}
+              type="button"
+              role="tab"
+              aria-selected={previewMode === "ui"}
+              onClick={() => setPreviewMode("ui")}
+            >
+              UI PREVIEW
+            </button>
+            <button
+              className={`preview-tab ${previewMode === "system" ? "active" : ""}`}
+              type="button"
+              role="tab"
+              aria-selected={previewMode === "system"}
+              onClick={() => setPreviewMode("system")}
+            >
+              SYSTEM FLOW
+            </button>
+          </div>
+          {previewMode === "ui" ? <ProjectImageSlot title={project.title} /> : <ProjectSystemPreview title={project.title} nodes={project.nodes} />}
         </div>
         <div className="project-copy">
           <div className="project-kicker">{project.number} / {project.kicker}</div>
           <h3 className="project-title">{project.title}</h3>
           <p className="project-description">{project.description}</p>
           <div className="tag-list">
-            {project.tags.slice(0, 6).map((tag) => <TechBadge tag={tag} key={tag} />)}
+            {project.tags.slice(0, 6).map((tag) => <TechBadge tag={tag} key={tag} active={activeSkill === tag} onClick={onSkillSelect ? () => onSkillSelect(tag) : undefined} />)}
             {project.tags.length > 6 ? <span className="tag tag-more">+{project.tags.length - 6} more</span> : null}
           </div>
           <div className="project-actions">
@@ -133,7 +168,7 @@ export function ProjectCard({ project }: { project: ProjectCardData }) {
                   <span className="modal-label">flow / system diagram</span>
                   <div className="modal-architecture">
                     {project.nodes.map((node, index) => (
-                      <span key={node} className={`architecture-node ${index === 1 ? "active" : ""}`}>{node}</span>
+                      <span key={node} className="architecture-node">{node}</span>
                     )).flatMap((node, index, all) => index < all.length - 1 ? [node, <span className="architecture-arrow" aria-hidden="true" key={`modal-${project.number}-arrow-${index}`} />] : [node])}
                   </div>
                   <div className="detailed-flow" aria-label={`${project.title} workflow steps`}>
@@ -149,7 +184,7 @@ export function ProjectCard({ project }: { project: ProjectCardData }) {
                 <div className="modal-panel">
                   <span className="modal-label">verified technologies</span>
                   <div className="tag-list modal-tags">
-                    {project.tags.map((tag) => <TechBadge tag={tag} key={tag} />)}
+                    {project.tags.map((tag) => <TechBadge tag={tag} key={tag} active={activeSkill === tag} onClick={onSkillSelect ? () => onSkillSelect(tag) : undefined} />)}
                   </div>
                 </div>
               </div>

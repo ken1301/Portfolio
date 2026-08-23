@@ -8,7 +8,8 @@ import {
   Terminal,
 } from "lucide-react";
 import { CopyEmailButton } from "@/components/CopyEmailButton";
-import { ProjectCard, type ProjectCardData } from "@/components/ProjectCard";
+import { InteractivePortfolio } from "@/components/InteractivePortfolio";
+import type { ProjectCardData } from "@/components/ProjectCard";
 import { ScrollAwareHeader } from "@/components/ScrollAwareHeader";
 
 const projects: ProjectCardData[] = [
@@ -95,33 +96,6 @@ const projects: ProjectCardData[] = [
       { label: "08 / finalize", detail: "Review, modified-file evidence, tests and citations reconcile into a verified report." },
     ],
     link: undefined,
-  },
-];
-
-const stackGroups = [
-  {
-    index: "01 // CORE STACK",
-    title: "Application foundation",
-    items: ["Next.js App Router", "React", "TypeScript"],
-    primary: ["Next.js App Router", "TypeScript"],
-  },
-  {
-    index: "02 // UI & STYLING",
-    title: "Interface foundation",
-    items: ["Geist Sans", "Geist Mono", "Lucide React", "Custom CSS", "CSS Grid", "Responsive CSS"],
-    primary: ["Geist Sans", "Custom CSS"],
-  },
-  {
-    index: "03 // INTERACTION",
-    title: "Small useful details",
-    items: ["Clipboard API", "CSS Transitions", "CSS Keyframes", "Anchor Navigation"],
-    primary: ["Clipboard API", "CSS Keyframes"],
-  },
-  {
-    index: "04 // QUALITY",
-    title: "Verified delivery",
-    items: ["TypeScript Strict", "React Strict Mode", "Static Prerendering", "npm Build", "Browser QA"],
-    primary: ["TypeScript Strict", "Static Prerendering"],
   },
 ];
 
@@ -220,47 +194,17 @@ export default function Home() {
                 <div className="terminal-line">&gt; make complex systems feel simple.</div>
                 <div className="terminal-separator">────────────────────</div>
                 <div className="terminal-line"><strong>availability</strong></div>
-                <div className="terminal-line"><em>&gt; open to meaningful product work</em><span className="terminal-cursor" /></div>
+              <div className="terminal-line"><em>&gt; open to meaningful product work</em><span className="terminal-cursor" /></div>
               </div>
             </div>
-          </div>
-        </section>
-
-        <section className="section shell" id="projects" aria-labelledby="projects-title">
-          <div className="section-heading">
-            <div>
-              <div className="section-kicker">/ 01 — selected work</div>
-              <h2 id="projects-title">Featured systems, explained without the fluff.</h2>
+            <div className="live-status-strip" aria-label="Live build status">
+              <span><span className="status-dot" aria-hidden="true" /> LIVE BUILD SIGNAL</span>
+              <strong>static / verified / ready</strong>
             </div>
-            <p className="section-intro">A case-study-first view of the decisions behind the interface.</p>
-          </div>
-
-          <div className="projects-grid">
-            {projects.map((project) => <ProjectCard key={project.number} project={project} />)}
           </div>
         </section>
 
-        <section className="section shell" id="systems" aria-labelledby="systems-title">
-          <div className="section-heading">
-            <div>
-              <div className="section-kicker">/ 02 — engineering stack</div>
-              <h2 id="systems-title">The tools behind this portfolio.</h2>
-            </div>
-            <p className="section-intro">Only the technologies and browser capabilities currently used by this portfolio.</p>
-          </div>
-
-          <div className="stack-grid">
-            {stackGroups.map((group) => (
-              <article className="stack-card" key={group.index}>
-                <div className="stack-index">{group.index}</div>
-                <h3>{group.title}</h3>
-                <div className="stack-items">
-                  {group.items.map((item) => <span className={`stack-item ${group.primary.includes(item) ? "primary" : ""}`} key={item}>{item}</span>)}
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
+        <InteractivePortfolio projects={projects} />
 
         <section className="section shell" id="bio" aria-labelledby="bio-title">
           <div className="section-heading">
