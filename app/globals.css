@@ -541,7 +541,7 @@ button {
 }
 
 .terminal-body {
-  min-height: 350px;
+  min-height: 286px;
   padding: 25px;
   background:
     linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
@@ -1652,6 +1652,14 @@ button.tag.active {
   color: var(--muted);
   font-size: 12px;
   line-height: 1.7;
+}
+
+.principle-evidence {
+  margin-top: 14px !important;
+  color: var(--crimson-bright) !important;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px !important;
+  line-height: 1.6 !important;
 }
 
 .contact {

@@ -23,7 +23,7 @@ export default function Image() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
           <div style={{ display: "flex", fontSize: 68, fontWeight: 700, letterSpacing: -3 }}>
-            Building scalable systems.
+            Building maintainable systems.
           </div>
           <div style={{ display: "flex", color: "#b1a8ad", fontSize: 28 }}>
             Full-stack Developer Intern | Web, Mobile &amp; AI Systems

@@ -196,7 +196,7 @@ export function ProjectCard({ project, activeSkill, onSkillSelect }: { project: 
               <div className="modal-kicker">{project.number} / {project.kicker}</div>
               <h2 id={`project-modal-title-${project.number}`}>{project.title}</h2>
               <p className="modal-description" id={`project-modal-description-${project.number}`}>{project.description}</p>
-              <div className="project-meta modal-meta" aria-label={`${project.title} verified details`}>
+              <div className="project-meta modal-meta" aria-label={`${project.title} project details`}>
                 <div><span>role</span><strong>{project.role}</strong></div>
                 <div><span>period</span><strong>{project.period}</strong></div>
                 <div><span>outcome</span><strong>{project.outcome}</strong></div>
@@ -240,7 +240,7 @@ export function ProjectCard({ project, activeSkill, onSkillSelect }: { project: 
                   </div>
                 </div>
                 <div className="modal-panel">
-                  <span className="modal-label">verified technologies</span>
+                  <span className="modal-label">technologies used</span>
                   <div className="tag-list modal-tags">
                     {project.tags.map((tag) => <TechBadge tag={tag} key={tag} active={activeSkill === tag} onClick={onSkillSelect ? () => onSkillSelect(tag) : undefined} />)}
                   </div>

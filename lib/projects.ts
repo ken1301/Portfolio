@@ -22,9 +22,9 @@ export type ProjectCardData = {
   linkLabel?: string;
 };
 
-export const projects = [
+const projectList = [
   {
-    number: "01",
+    number: "02",
     title: "MediCare",
     kicker: "IN DEVELOPMENT / FAMILY HEALTH PRODUCT",
     description:
@@ -57,7 +57,7 @@ export const projects = [
     link: undefined,
   },
   {
-    number: "02",
+    number: "01",
     title: "Dfriend",
     kicker: "LIVE / PRODUCTION PRODUCT",
     description:
@@ -93,7 +93,7 @@ export const projects = [
     linkLabel: "Visit live product",
   },
   {
-    number: "03",
+    number: "04",
     title: "SmartSaving",
     kicker: "DEPLOYED DEMO / FINANCIAL MANAGEMENT",
     description:
@@ -127,11 +127,11 @@ export const projects = [
     linkLabel: "Open deployed demo",
   },
   {
-    number: "04",
+    number: "03",
     title: "Agentic Coding Agent",
     kicker: "PRIVATE / AGENTIC CODING",
     description:
-      "A dependency-light AI coding agent that turns a repository task into a bounded, evidence-grounded workflow with structured decisions, controlled tools and verified final reporting.",
+      "A dependency-light AI coding agent that turns a repository task into a bounded, evidence-grounded workflow with structured decisions, controlled tools and final reporting.",
     role: "Agentic AI Developer",
     period: "Jul 2026 — ongoing",
     outcome: "Private repository under active development with skill routing, repository RAG, controlled MCP tools, approval gates and a resumable coding workflow.",
@@ -145,7 +145,7 @@ export const projects = [
       { label: "05 / plan", detail: "The model returns a typed, structured plan before any mutation is allowed." },
       { label: "06 / execute", detail: "Allowlisted MCP-shaped tools handle patches, tests and repository reads." },
       { label: "07 / recover", detail: "Failed tests route through bounded debugging, re-retrieval or repair decisions." },
-      { label: "08 / finalize", detail: "Review, modified-file evidence, tests and citations reconcile into a verified report." },
+      { label: "08 / finalize", detail: "Review, modified-file evidence, tests and citations reconcile into a final report." },
     ],
     caseStudy: {
       challenge: "Make repository-level coding work bounded, inspectable and recoverable instead of treating an agent as an unconstrained chat loop.",
@@ -164,3 +164,5 @@ export const projects = [
     link: undefined,
   },
 ] satisfies ProjectCardData[];
+
+export const projects: ProjectCardData[] = [...projectList].sort((a, b) => Number(a.number) - Number(b.number));

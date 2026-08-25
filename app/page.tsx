@@ -5,7 +5,6 @@ import {
   Github,
   Linkedin,
   Mail,
-  Terminal,
 } from "lucide-react";
 import Image from "next/image";
 import { CopyEmailButton } from "@/components/CopyEmailButton";
@@ -19,14 +18,17 @@ const principles = [
   {
     title: "Clarity over noise",
     description: "Every surface has a job: explain the work, show the thinking or move the next action forward.",
+    evidence: "Applied in Dfriend → separate student / teacher surfaces.",
   },
   {
     title: "Systems that scale",
     description: "Types, tokens and composable primitives keep the build fast without turning the codebase fragile.",
+    evidence: "Applied in Dfriend → asynchronous exercise-processing pipeline.",
   },
   {
     title: "Proof, not promises",
     description: "The portfolio treats performance, architecture and shipped details as evidence—not decoration.",
+    evidence: "Applied in SmartSaving → complete deployed demo workflow.",
   },
 ];
 
@@ -41,11 +43,11 @@ export default function Home() {
           <div>
             <div className="eyebrow">
               <span className="status-dot" aria-hidden="true" />
-              SYSTEM STATUS: ONLINE
+              CURRENTLY SHIPPING
             </div>
             <p className="hero-role">Full-stack Developer Intern | Web, Mobile &amp; AI Systems</p>
             <h1 id="hero-title">
-              Building scalable web systems <span>&amp;</span> high-performance interfaces.
+              Building maintainable web systems <span>&amp;</span> responsive interfaces.
             </h1>
             <p className="hero-copy">
               Full-stack developer intern working across web, mobile and AI-assisted workflows—turning dense requirements into secure, clear and dependable products.
@@ -88,7 +90,7 @@ export default function Home() {
                 <div className="profile-card-main">
                   <div>
                     <strong>Tuấn Kiệt Đỗ Lê</strong>
-                    <span>Full-stack Developer Intern | Web, Mobile &amp; AI Systems</span>
+                    <span>Web / mobile / AI systems</span>
                     <span className="profile-location">Based in Vietnam · Open to internship opportunities</span>
                   </div>
                 </div>
@@ -102,28 +104,21 @@ export default function Home() {
 
             <div className="terminal" aria-label="Terminal profile card">
               <div className="terminal-bar">
-                <span className="terminal-label">terminal_session_01</span>
+                <span className="terminal-label">proof_summary_01</span>
                 <span className="terminal-dots" aria-hidden="true"><i /><i /><i /></span>
               </div>
               <div className="terminal-body">
-                <div className="terminal-line"><strong>whoami</strong></div>
-                <div className="terminal-line">&gt; tuan.kiet / full-stack developer intern</div>
+                <div className="terminal-line"><strong>currently_shipping</strong></div>
+                <div className="terminal-line">&gt; dfriend / production edtech</div>
+                <div className="terminal-line">&gt; medicare / mobile health system</div>
+                <div className="terminal-line">&gt; coding agent / repository RAG + controlled tools</div>
                 <div className="terminal-separator">────────────────────</div>
-                <div className="terminal-line"><strong>stack --primary</strong></div>
-                <div className="terminal-line">&gt; next.js / react / typescript</div>
-                <div className="terminal-line">&gt; geist / custom css / lucide</div>
-                <div className="terminal-line">&gt; build / typecheck / static prerender</div>
-                <div className="terminal-separator">────────────────────</div>
-                <div className="terminal-line"><strong>mission</strong></div>
-                <div className="terminal-line">&gt; make complex systems feel simple.</div>
+                <div className="terminal-line"><strong>delivery_mode</strong></div>
+                <div className="terminal-line">&gt; build / typecheck / ship / iterate</div>
                 <div className="terminal-separator">────────────────────</div>
                 <div className="terminal-line"><strong>availability</strong></div>
-              <div className="terminal-line"><em>&gt; based in Vietnam / open to internship opportunities</em><span className="terminal-cursor" /></div>
+                <div className="terminal-line"><em>&gt; based in Vietnam / open to internship opportunities</em><span className="terminal-cursor" /></div>
               </div>
-            </div>
-            <div className="live-status-strip" aria-label="Live build status">
-              <span><span className="status-dot" aria-hidden="true" /> LIVE BUILD SIGNAL</span>
-              <strong>static / verified / ready</strong>
             </div>
           </div>
         </section>
@@ -144,6 +139,7 @@ export default function Home() {
                 <div className="project-kicker">0{index + 1} / principle</div>
                 <h3>{principle.title}</h3>
                 <p>{principle.description}</p>
+                <p className="principle-evidence">{principle.evidence}</p>
               </ScrollReveal>
             ))}
           </div>
@@ -153,7 +149,7 @@ export default function Home() {
           <SectionHeading
             index="04"
             label="CONTACT"
-            title="Let's build something scalable together."
+            title="Let's build something maintainable together."
             titleId="contact-title"
             intro="A direct channel for product work that benefits from clearer systems and dependable execution."
           />
@@ -175,12 +171,6 @@ export default function Home() {
               <a className="contact-link" href="mailto:doletuankiet06@gmail.com">
                 <span><Mail size={14} /> Email / start a conversation</span><ArrowUpRight size={13} />
               </a>
-              <div className="terminal-label" style={{ marginTop: 35 }}><Terminal size={13} /> core_values.exe</div>
-              <div className="tag-list">
-                <span className="tag">clarity</span>
-                <span className="tag">scalability</span>
-                <span className="tag">performance</span>
-              </div>
             </div>
           </ScrollReveal>
         </section>
