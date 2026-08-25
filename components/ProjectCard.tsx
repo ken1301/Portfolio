@@ -24,13 +24,13 @@ function ProjectImageSlot({ title, image, modal = false }: { title: string; imag
 
 function ProjectSystemPreview({ title, nodes }: { title: string; nodes: string[] }) {
   return (
-    <div className="project-system-preview" role="img" aria-label={`${title} system flow preview`}>
+    <div className="project-system-preview" role="img" aria-label={`${title} system architecture preview`}>
       <div className="project-system-track">
         {nodes.map((node, index) => (
           <span key={node} className="architecture-node">{node}</span>
         )).flatMap((node, index, all) => index < all.length - 1 ? [node, <span className="architecture-arrow" aria-hidden="true" key={`${title}-preview-arrow-${index}`} />] : [node])}
       </div>
-      <span className="project-system-readout">FLOW / {nodes.join(" → ")}</span>
+      <span className="project-system-readout">SYSTEM / ARCHITECTURE · {nodes.join(" → ")}</span>
     </div>
   );
 }
@@ -135,7 +135,7 @@ export function ProjectCard({ project, activeSkill, onSkillSelect }: { project: 
               onKeyDown={(event) => handlePreviewKeyDown(event, "system")}
               onClick={() => setPreviewMode("system")}
             >
-              SYSTEM FLOW
+              SYSTEM / ARCHITECTURE
             </button>
           </div>
           {previewMode === "ui" ? (
