@@ -4,8 +4,6 @@ Personal engineering portfolio showcasing selected work across web, mobile and A
 
 **Live website:** [portfolio-ken1301s-projects.vercel.app](https://portfolio-ken1301s-projects.vercel.app)
 
-![Selected project preview](public/images/projects/dfriend-learning-v2.png)
-
 ## Built with
 
 - Next.js 16 App Router and React Server Components
