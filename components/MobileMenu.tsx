@@ -58,6 +58,10 @@ export function MobileMenu({ activeSection }: { activeSection: string }) {
               <span aria-hidden="true">↗</span>
             </a>
           ))}
+          <a href="/resume" onClick={() => setIsOpen(false)}>
+            <span>RESUME ↗</span>
+            <span aria-hidden="true">↗</span>
+          </a>
         </nav>
       ) : null}
     </div>

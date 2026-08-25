@@ -32,17 +32,22 @@ const skillGroups: SkillGroup[] = [
   {
     index: "01",
     title: "Languages",
-    skills: ["TypeScript", "JavaScript", "Java", "C++"],
+    skills: ["TypeScript", "Java", "Python 3.11+", "JavaScript", "C++"],
   },
   {
     index: "02",
-    title: "Frameworks",
-    skills: ["Next.js", "React", "React Native", "NestJS", "FastAPI", "Spring Boot"],
+    title: "Product UI",
+    skills: ["Next.js", "React", "React Native", "Tailwind CSS"],
   },
   {
     index: "03",
-    title: "Tools & Data",
-    skills: ["Tailwind CSS", "PostgreSQL", "MongoDB", "Prisma", "Redis", "Docker", "SQLite"],
+    title: "API & Services",
+    skills: ["NestJS", "FastAPI", "Spring Boot"],
+  },
+  {
+    index: "04",
+    title: "Data & Delivery",
+    skills: ["PostgreSQL", "MongoDB", "Prisma", "Redis", "Docker", "SQLite"],
   },
 ];
 

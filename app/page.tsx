@@ -1,6 +1,5 @@
 import {
   ArrowUpRight,
-  ChevronRight,
   ExternalLink,
   Github,
   Linkedin,
@@ -22,7 +21,7 @@ const principles = [
   },
   {
     title: "Systems that scale",
-    description: "Types, tokens and composable primitives keep the build fast without turning the codebase fragile.",
+    description: "Clear service boundaries, asynchronous work and typed interfaces keep complex workflows understandable as they grow.",
     evidence: "Applied in Dfriend → asynchronous exercise-processing pipeline.",
   },
   {
@@ -56,8 +55,8 @@ export default function Home() {
               <a className="button button-primary" href="#projects">
                 Explore selected work <ArrowUpRight size={14} />
               </a>
-              <a className="button button-ghost" href="#systems">
-                Read the stack <ChevronRight size={14} />
+              <a className="button button-ghost" href="/resume">
+                View resume <ArrowUpRight size={14} />
               </a>
             </div>
             <div className="hero-metrics" aria-label="Profile highlights">
@@ -113,8 +112,8 @@ export default function Home() {
                 <div className="terminal-line">&gt; medicare / mobile health system</div>
                 <div className="terminal-line">&gt; coding agent / repository RAG + controlled tools</div>
                 <div className="terminal-separator">────────────────────</div>
-                <div className="terminal-line"><strong>delivery_mode</strong></div>
-                <div className="terminal-line">&gt; build / typecheck / ship / iterate</div>
+                <div className="terminal-line"><strong>working_style</strong></div>
+                <div className="terminal-line">&gt; product flows / service boundaries / controlled AI</div>
                 <div className="terminal-separator">────────────────────</div>
                 <div className="terminal-line"><strong>availability</strong></div>
                 <div className="terminal-line"><em>&gt; based in Vietnam / open to internship opportunities</em><span className="terminal-cursor" /></div>
@@ -149,13 +148,13 @@ export default function Home() {
           <SectionHeading
             index="04"
             label="CONTACT"
-            title="Let's build something maintainable together."
+            title="Open to internship opportunities."
             titleId="contact-title"
             intro="A direct channel for product work that benefits from clearer systems and dependable execution."
           />
           <ScrollReveal className="contact">
             <div className="contact-main">
-              <p className="contact-copy">Have a product surface that needs clarity, a codebase that needs structure, or a system worth making faster? Send the brief. I&apos;ll bring the first useful question.</p>
+              <p className="contact-copy">I&apos;m open to internship opportunities and product engineering conversations across web, mobile and AI-assisted systems. If the work is a fit, send a note and I&apos;ll bring the first useful question.</p>
               <div className="email-row">
                 <span>doletuankiet06@gmail.com</span>
                 <CopyEmailButton />

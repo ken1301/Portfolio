@@ -58,8 +58,8 @@ export function ScrollAwareHeader() {
             </a>
           ))}
         </nav>
-        <a className="topbar-action" href="#contact">
-          GET_IN_TOUCH
+        <a className="topbar-action" href="/resume">
+          RESUME ↗
         </a>
         <MobileMenu activeSection={activeSection} />
       </div>

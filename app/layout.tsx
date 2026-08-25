@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Tuấn Kiệt Đỗ Lê" }],
   creator: "Tuấn Kiệt Đỗ Lê",
   alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
   keywords: ["Tuấn Kiệt Đỗ Lê", "full-stack developer intern", "Next.js", "React", "TypeScript", "AI systems"],
   openGraph: {
     title: "Tuấn Kiệt Đỗ Lê — Full-stack Developer Intern",
