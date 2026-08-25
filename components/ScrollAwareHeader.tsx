@@ -10,6 +10,9 @@ export function ScrollAwareHeader() {
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
+    let frame = 0;
+    let updateQueued = false;
+
     const updateHeader = () => {
       setIsScrolled(window.scrollY > 24);
 
@@ -25,17 +28,27 @@ export function ScrollAwareHeader() {
 
     updateHeader();
 
-    window.addEventListener("scroll", updateHeader, { passive: true });
+    const handleScroll = () => {
+      if (updateQueued) return;
+      updateQueued = true;
+      frame = window.requestAnimationFrame(() => {
+        updateQueued = false;
+        updateHeader();
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener("scroll", updateHeader);
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   return (
     <header className={`topbar ${isScrolled ? "topbar-scrolled" : ""}`}>
       <div className="shell topbar-inner">
-        <a className="wordmark" href="#top" aria-label="Tuan Kiet home">
+        <a className="wordmark" href="#top" aria-label="Tuấn Kiệt Đỗ Lê home">
           TUAN.KIET<span className="wordmark-dot">•</span>
         </a>
         <nav className="nav" aria-label="Main navigation">
@@ -46,7 +59,7 @@ export function ScrollAwareHeader() {
               aria-current={activeSection === section ? "location" : undefined}
               key={section}
             >
-              {section === "projects" ? "PROJECTS" : section === "systems" ? "SYSTEMS" : section === "bio" ? "BIO" : "LOGS"}
+              {section === "projects" ? "PROJECTS" : section === "systems" ? "SYSTEMS" : section === "bio" ? "BIO" : "CONTACT"}
             </a>
           ))}
         </nav>

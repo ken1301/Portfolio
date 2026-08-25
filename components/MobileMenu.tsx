@@ -7,7 +7,7 @@ const sections = [
   { id: "projects", label: "PROJECTS" },
   { id: "systems", label: "SYSTEMS" },
   { id: "bio", label: "BIO" },
-  { id: "contact", label: "LOGS" },
+  { id: "contact", label: "CONTACT" },
 ];
 
 export function MobileMenu({ activeSection }: { activeSection: string }) {

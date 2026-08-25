@@ -25,6 +25,9 @@ html {
 }
 
 body {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
   margin: 0;
   color: var(--text);
   background:
@@ -37,9 +40,38 @@ body {
   background-attachment: fixed;
 }
 
+.red-binary-rain {
+  position: fixed;
+  z-index: -1;
+  inset: 0;
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
 a {
   color: inherit;
   text-decoration: none;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 20;
+  top: 8px;
+  left: 8px;
+  padding: 8px 12px;
+  color: var(--bg);
+  background: var(--crimson-bright);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  transform: translateY(-160%);
+  transition: transform 180ms ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }
 
 button {
@@ -232,20 +264,41 @@ button {
 .profile-card-main {
   justify-content: flex-start;
   gap: 12px;
-  margin-top: 17px;
+  margin-top: 14px;
 }
 
-.profile-avatar {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  border: 1px solid var(--crimson);
-  border-radius: 50%;
-  color: var(--crimson-bright);
+.profile-card-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  margin-top: 16px;
+  border: 1px solid var(--line);
+  background: #101014;
+}
+
+.profile-card-photo img {
+  object-fit: cover;
+  object-position: center 64%;
+}
+
+.profile-card-photo::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(8, 8, 10, 0.72));
+  content: "";
+  pointer-events: none;
+}
+
+.profile-card-photo span {
+  position: absolute;
+  right: 11px;
+  bottom: 10px;
+  z-index: 1;
+  color: #f5eef0;
   font-family: var(--font-geist-mono), monospace;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .profile-card-main strong,
@@ -263,6 +316,12 @@ button {
   color: var(--muted);
   font-family: var(--font-geist-mono), monospace;
   font-size: 9px;
+}
+
+.profile-card-main .profile-location {
+  color: var(--dim);
+  font-size: 8px;
+  line-height: 1.5;
 }
 
 .profile-card-grid {
@@ -332,6 +391,15 @@ button {
   font-weight: 650;
   letter-spacing: -0.075em;
   line-height: 0.98;
+}
+
+.hero-role {
+  margin: 20px 0 0;
+  color: var(--crimson-bright);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .hero h1 span {
@@ -495,12 +563,28 @@ button {
   margin-bottom: 27px;
 }
 
+.section-heading-main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
 .section-heading h2 {
   max-width: 600px;
   margin: 10px 0 0;
   font-size: clamp(27px, 4vw, 44px);
   letter-spacing: -0.06em;
   line-height: 1;
+}
+
+.section-heading-line {
+  display: block;
+  width: min(100%, 600px);
+  height: 1px;
+  margin-top: 16px;
+  background: linear-gradient(90deg, var(--crimson-bright), rgba(239, 68, 68, 0));
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
+  transform-origin: left center;
 }
 
 .section-intro {
@@ -551,9 +635,25 @@ button {
   box-shadow: 0 20px 46px rgba(0, 0, 0, 0.32), 0 0 0 1px rgba(237, 23, 77, 0.18), 0 14px 36px rgba(237, 23, 77, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.project-card:focus-visible {
+.project-card:focus-within {
   outline: 1px solid var(--crimson-bright);
   outline-offset: 4px;
+}
+
+.project-card-hit-area {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.project-card-hit-area:focus-visible {
+  outline: 2px solid var(--crimson-bright);
+  outline-offset: -3px;
 }
 
 .projects-grid.has-skill-filter .project-card {
@@ -599,6 +699,7 @@ button {
   flex: 1;
   flex-direction: column;
   padding: 22px;
+  pointer-events: none;
 }
 
 .project-preview {
@@ -610,12 +711,35 @@ button {
   border-bottom: 1px solid var(--line);
   overflow: hidden;
   background: #101014;
+  pointer-events: none;
+}
+
+.project-preview .preview-tabs,
+.project-copy .tag-list,
+.project-copy .project-open {
+  pointer-events: auto;
+}
+
+.project-preview > [role="tabpanel"] {
+  height: 100%;
 }
 
 .project-preview .project-image-slot {
   height: 100%;
   min-height: 274px;
   aspect-ratio: auto;
+}
+
+.project-card-featured .project-preview,
+.project-card-featured .project-preview .project-image-slot,
+.project-card-featured .project-system-preview {
+  min-height: 330px;
+}
+
+.project-card-compact .project-preview,
+.project-card-compact .project-preview .project-image-slot,
+.project-card-compact .project-system-preview {
+  min-height: 230px;
 }
 
 .preview-tabs {
@@ -678,12 +802,17 @@ button {
   height: 48px;
   flex: 1;
   min-width: 0;
+  overflow: hidden;
+  padding: 0 4px;
   font-size: 8px;
+  line-height: 1.15;
+  overflow-wrap: break-word;
+  text-align: center;
 }
 
 .project-system-track .architecture-arrow {
-  flex: 1;
-  min-width: 10px;
+  flex: 0.35;
+  min-width: 8px;
 }
 
 .project-system-readout {
@@ -709,6 +838,11 @@ button {
   background:
     radial-gradient(circle at 75% 20%, rgba(237, 23, 77, 0.18), transparent 28%),
     #101014;
+}
+
+.project-image-media {
+  z-index: 1;
+  object-fit: cover;
 }
 
 .project-image-grid {
@@ -853,6 +987,11 @@ button.tag.active {
   fill: currentColor;
 }
 
+.tech-icon-java {
+  flex: 0 0 auto;
+  background: url("/icons/java.svg") center / contain no-repeat;
+}
+
 .skills-section {
   position: relative;
   overflow: hidden;
@@ -861,29 +1000,13 @@ button.tag.active {
 .skills-arsenal {
   position: relative;
   display: grid;
-  gap: 28px;
-}
-
-.skills-binary {
-  position: absolute;
-  z-index: -1;
-  top: -28px;
-  right: -3px;
-  color: rgba(239, 68, 68, 0.12);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: clamp(44px, 8vw, 92px);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 0.85;
-  pointer-events: none;
-  transform: rotate(-7deg);
-  user-select: none;
+  gap: 27px;
 }
 
 .skill-group {
   position: relative;
   display: grid;
-  gap: 13px;
+  gap: 9px;
 }
 
 .skill-group-heading {
@@ -907,122 +1030,140 @@ button.tag.active {
 
 .skills-grid {
   display: grid;
-  gap: 12px;
+  gap: 9px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
 .skill-card {
-  --skill-spot-x: 50%;
-  --skill-spot-y: 50%;
   position: relative;
   display: flex;
-  min-height: 132px;
+  min-height: 68px;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   flex-direction: column;
-  gap: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  padding: 18px 12px 14px;
+  gap: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 8px;
+  padding: 8px 10px;
   color: var(--muted);
-  background: #121214;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.025), transparent 42%),
+    rgba(17, 15, 18, 0.7);
   cursor: pointer;
-  isolation: isolate;
   text-align: center;
-  transition: border-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
-}
-
-.skill-card::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: radial-gradient(circle at var(--skill-spot-x) var(--skill-spot-y), rgba(239, 68, 68, 0.24), transparent 46%);
-  content: "";
-  opacity: 0;
-  transition: opacity 180ms ease;
-}
-
-.skill-card::after {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 5px;
-  height: 5px;
-  border: 1px solid var(--dim);
-  border-radius: 50%;
-  content: "";
-  opacity: 0.5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(5px);
+  transition: border-color 180ms ease, color 180ms ease, background 180ms ease, box-shadow 180ms ease;
 }
 
 .skill-card:hover,
-.skill-card:focus-visible,
-.skill-card.active {
-  border-color: rgba(239, 68, 68, 0.72);
+.skill-card:focus-visible {
+  border-color: rgba(237, 23, 77, 0.42);
   color: #fff;
-  box-shadow: 0 0 0 1px rgba(239, 68, 68, 0.16), 0 16px 30px rgba(239, 68, 68, 0.1);
+  background:
+    linear-gradient(145deg, rgba(237, 23, 77, 0.065), transparent 48%),
+    rgba(19, 15, 19, 0.82);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.035);
   outline: none;
 }
 
-.skill-card:hover::before,
-.skill-card:focus-visible::before,
-.skill-card.active::before {
-  opacity: 1;
-}
-
-.skill-card.active::after {
-  border-color: var(--crimson-bright);
-  background: var(--crimson-bright);
-  box-shadow: 0 0 10px rgba(239, 68, 68, 0.8);
-  opacity: 1;
+.skill-card.active {
+  border-color: rgba(237, 23, 77, 0.68);
+  background:
+    linear-gradient(145deg, rgba(237, 23, 77, 0.1), transparent 54%),
+    rgba(20, 15, 20, 0.86);
+  box-shadow: 0 0 0 1px rgba(237, 23, 77, 0.1), 0 10px 30px rgba(0, 0, 0, 0.18);
+  outline: none;
 }
 
 .skill-card-icon {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 26px;
+  height: 26px;
   place-items: center;
   color: var(--muted);
   transition: color 180ms ease, transform 180ms ease;
 }
 
 .skill-card:hover .skill-card-icon,
-.skill-card:focus-visible .skill-card-icon,
-.skill-card.active .skill-card-icon {
+.skill-card:focus-visible .skill-card-icon {
   color: var(--crimson-bright);
   transform: scale(1.08);
 }
 
 .skill-card-name {
-  color: #d5ced2;
+  color: rgba(244, 241, 241, 0.76);
   font-family: var(--font-geist-mono), monospace;
   font-size: 10px;
   line-height: 1.3;
 }
 
 .skill-card-signal {
-  color: var(--dim);
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 7px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  display: none;
 }
 
-.skill-card.active .skill-card-name,
 .skill-card:hover .skill-card-name,
 .skill-card:focus-visible .skill-card-name {
   color: #fff;
 }
 
+.portfolio-technologies {
+  display: grid;
+  gap: 13px;
+  border-top: 1px solid var(--line-soft);
+  padding-top: 22px;
+}
+
+.portfolio-technologies-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.portfolio-technologies-heading > span {
+  color: var(--crimson-bright);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+}
+
+.portfolio-technologies-heading h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.portfolio-technology-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.portfolio-technology-list > span {
+  display: inline-flex;
+}
+
+.portfolio-technology-list .tag {
+  border-color: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: var(--muted);
+  background: rgba(18, 18, 22, 0.82);
+  text-transform: none;
+}
+
 .skills-trace {
   display: grid;
   align-items: center;
-  gap: 10px;
-  margin-top: 24px;
+  gap: 14px;
+  margin-top: 16px;
   border: 1px solid var(--line);
   border-left: 2px solid var(--crimson);
-  padding: 15px 18px;
+  padding: 11px 14px;
   background: linear-gradient(90deg, rgba(239, 68, 68, 0.08), transparent 62%), var(--surface);
+  grid-template-columns: auto auto 1fr;
 }
 
 .skills-trace.active {
@@ -1043,6 +1184,10 @@ button.tag.active {
   font-family: var(--font-geist-mono), monospace;
   font-size: 12px;
   font-weight: 500;
+}
+
+.skills-trace > span:last-child {
+  text-align: right;
 }
 
 .project-open,
@@ -1222,11 +1367,52 @@ button.tag.active {
   grid-template-columns: minmax(0, 1.35fr) minmax(220px, 0.65fr);
 }
 
+.modal-grid-insight {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .modal-panel {
   min-height: 150px;
   min-width: 0;
   padding: 18px;
   background: var(--surface-soft);
+}
+
+.modal-panel .modal-label {
+  color: var(--crimson-bright);
+}
+
+.modal-panel > p {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.modal-bullet-list {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.55;
+  list-style: none;
+}
+
+.modal-bullet-list li {
+  position: relative;
+  padding-left: 14px;
+}
+
+.modal-bullet-list li::before {
+  position: absolute;
+  top: 0.55em;
+  left: 0;
+  width: 5px;
+  height: 5px;
+  border: 1px solid var(--crimson);
+  content: "";
 }
 
 .modal-architecture {
@@ -1309,20 +1495,23 @@ button.tag.active {
   width: 92px;
   height: 54px;
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: #18181d;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-  color: #eee8eb;
+  border: 1px solid rgba(239, 68, 68, 0.82);
+  background: linear-gradient(145deg, rgba(239, 68, 68, 0.2), rgba(95, 20, 38, 0.18));
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38), 0 0 18px rgba(239, 68, 68, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  color: #fff;
   font-family: var(--font-geist-mono), monospace;
   font-size: 9px;
+  font-weight: 600;
   letter-spacing: 0.04em;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.16);
   text-transform: uppercase;
 }
 
 .architecture-arrow {
   width: 48px;
   height: 1px;
-  background: rgba(255, 255, 255, 0.24);
+  background: rgba(239, 68, 68, 0.82);
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.24);
 }
 
 .stack-grid {
@@ -1433,14 +1622,6 @@ button.tag.active {
 .contact-side {
   border-left: 1px solid var(--line);
   background: var(--surface);
-}
-
-.contact h2 {
-  max-width: 560px;
-  margin: 12px 0 17px;
-  font-size: clamp(30px, 5vw, 53px);
-  letter-spacing: -0.07em;
-  line-height: 0.98;
 }
 
 .contact-copy {
@@ -1684,6 +1865,15 @@ button.tag.active {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .skills-trace {
+    gap: 6px;
+    grid-template-columns: 1fr;
+  }
+
+  .skills-trace > span:last-child {
+    text-align: left;
+  }
+
   .section {
     padding: 70px 0;
   }
@@ -1700,6 +1890,15 @@ button.tag.active {
   .project-preview,
   .project-preview .project-image-slot,
   .project-system-preview {
+    min-height: 220px;
+  }
+
+  .project-card-featured .project-preview,
+  .project-card-featured .project-preview .project-image-slot,
+  .project-card-featured .project-system-preview,
+  .project-card-compact .project-preview,
+  .project-card-compact .project-preview .project-image-slot,
+  .project-card-compact .project-system-preview {
     min-height: 220px;
   }
 
@@ -1724,6 +1923,10 @@ button.tag.active {
   }
 
   .modal-grid-with-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-grid-insight {
     grid-template-columns: 1fr;
   }
 
@@ -1777,6 +1980,10 @@ button.tag.active {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .red-binary-rain {
+    opacity: 0.5;
   }
 
   *,

@@ -7,97 +7,13 @@ import {
   Mail,
   Terminal,
 } from "lucide-react";
+import Image from "next/image";
 import { CopyEmailButton } from "@/components/CopyEmailButton";
 import { InteractivePortfolio } from "@/components/InteractivePortfolio";
-import type { ProjectCardData } from "@/components/ProjectCard";
+import { SectionHeading } from "@/components/SectionHeading";
 import { ScrollAwareHeader } from "@/components/ScrollAwareHeader";
-
-const projects: ProjectCardData[] = [
-  {
-    number: "01",
-    title: "MediCare",
-    kicker: "IN DEVELOPMENT / FAMILY HEALTH PRODUCT",
-    description:
-      "A family health product combining multi-family access, medication, vaccination, appointments, real-time chat and controlled AI/OCR workflows in one mobile experience.",
-    role: "Full-stack developer",
-    period: "Mar 2026 — ongoing",
-    outcome: "Product is actively being completed and remains in development.",
-    tags: ["React Native", "Spring Boot", "FastAPI", "PostgreSQL", "Redis", "Docker"],
-    nodes: ["MOBILE", "CORE API", "REALTIME", "AI/OCR"],
-    flow: [
-      { label: "01 / mobile access", detail: "React Native provides the family-facing mobile experience." },
-      { label: "02 / health services", detail: "Core workflows cover medication, vaccination and appointments." },
-      { label: "03 / realtime care", detail: "Family access and chat connect people to active care workflows." },
-      { label: "04 / ai-assisted input", detail: "Controlled AI/OCR workflows support structured health information." },
-    ],
-    link: undefined,
-  },
-  {
-    number: "02",
-    title: "Dfriend",
-    kicker: "LIVE / PRODUCTION PRODUCT",
-    description:
-      "A production EdTech platform with dedicated student and teacher experiences, class management, metrics, exercise uploads, AI analysis and streamed progress updates.",
-    role: "Full-stack developer",
-    period: "Feb 2026 — ongoing",
-    outcome: "Live with real users while the product and its AI-assisted learning workflow continue to evolve.",
-    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "NestJS", "Prisma", "PostgreSQL", "MongoDB", "Redis", "BullMQ", "FastAPI", "Socket.IO", "SSE", "OpenAI / Groq", "Docker"],
-    nodes: ["STUDENT", "TEACHER", "AI PIPELINE", "EVENTS"],
-    flow: [
-      { label: "01 / role entry", detail: "Student and teacher journeys enter through separate role-aware surfaces in the Next.js product." },
-      { label: "02 / secure session", detail: "JWT authentication is carried through HttpOnly cookies and role-based redirects." },
-      { label: "03 / classroom domain", detail: "Classes, joining, student metrics, classmates and teacher management form the core workflows." },
-      { label: "04 / exercise intake", detail: "Teachers upload exercises and receive a job identifier for the processing workflow." },
-      { label: "05 / ai processing", detail: "A Python FastAPI service coordinates document parsing and AI analysis with OpenAI/Groq adapters." },
-      { label: "06 / live progress", detail: "SSE and Socket.IO return upload, analysis and completion progress to the frontend." },
-    ],
-    link: "https://www.dfriend.online/vi",
-    linkLabel: "Visit live product",
-  },
-  {
-    number: "03",
-    title: "SmartSaving",
-    kicker: "DEPLOYED DEMO / FINANCIAL MANAGEMENT",
-    description:
-      "A deployed web platform for managing savings books, deposits, withdrawals, interest rules, reports and role-based account access.",
-    role: "Full-stack developer",
-    period: "Mar — Jun 2026",
-    outcome: "Completed as a project demo and deployed on Vercel.",
-    tags: ["React", "Vite", "Tailwind CSS", "Axios", "React Router", "Spring Boot", "Spring Security", "JPA / Hibernate", "PostgreSQL / Supabase", "JWT", "Docker", "Maven"],
-    nodes: ["REACT / VITE", "SPRING API", "SECURITY", "POSTGRES"],
-    flow: [
-      { label: "01 / client app", detail: "React and Vite render the responsive savings-book, transaction and account workflows." },
-      { label: "02 / api services", detail: "Spring Boot exposes REST endpoints for savings books, deposits, withdrawals and reports." },
-      { label: "03 / secure access", detail: "Spring Security, JWT and BCrypt protect the Admin, Teller and Customer roles." },
-      { label: "04 / persistence", detail: "JPA/Hibernate stores users, savings books, transactions and rate settings in PostgreSQL/Supabase." },
-    ],
-    link: "https://se-104-q21-grour-6-smartsaving.vercel.app/login",
-    linkLabel: "Open deployed demo",
-  },
-  {
-    number: "04",
-    title: "Agentic Coding Agent",
-    kicker: "PRIVATE / AGENTIC CODING",
-    description:
-      "A dependency-light AI coding agent that turns a repository task into a bounded, evidence-grounded workflow with structured decisions, controlled tools and verified final reporting.",
-    role: "Agentic AI engineer",
-    period: "Jul 2026 — ongoing",
-    outcome: "Private repository under active development with skill routing, repository RAG, controlled MCP tools, approval gates and a resumable coding workflow.",
-    tags: ["Python 3.11+", "OpenAI Responses", "OpenRouter", "Repository RAG", "MCP / JSON-RPC", "SQLite"],
-    nodes: ["STATE", "EVIDENCE", "TOOLS", "REPORT"],
-    flow: [
-      { label: "01 / intake", detail: "Issue enters a persisted task state inside a workspace policy boundary." },
-      { label: "02 / analyze", detail: "The agent selects the applicable skills and records the task context." },
-      { label: "03 / retrieve", detail: "Repository RAG searches bounded source chunks and attaches line citations." },
-      { label: "04 / verify", detail: "Evidence is checked for grounding, freshness and file-digest consistency." },
-      { label: "05 / plan", detail: "The model returns a typed, structured plan before any mutation is allowed." },
-      { label: "06 / execute", detail: "Allowlisted MCP-shaped tools handle patches, tests and repository reads." },
-      { label: "07 / recover", detail: "Failed tests route through bounded debugging, re-retrieval or repair decisions." },
-      { label: "08 / finalize", detail: "Review, modified-file evidence, tests and citations reconcile into a verified report." },
-    ],
-    link: undefined,
-  },
-];
+import { ScrollReveal } from "@/components/ScrollReveal";
+import { projects } from "@/lib/projects";
 
 const principles = [
   {
@@ -117,6 +33,7 @@ const principles = [
 export default function Home() {
   return (
     <>
+      <a className="skip-link" href="#projects">Skip to selected work</a>
       <ScrollAwareHeader />
 
       <main id="top">
@@ -126,11 +43,12 @@ export default function Home() {
               <span className="status-dot" aria-hidden="true" />
               SYSTEM STATUS: ONLINE
             </div>
+            <p className="hero-role">Full-stack Developer Intern | Web, Mobile &amp; AI Systems</p>
             <h1 id="hero-title">
               Building scalable web systems <span>&amp;</span> high-performance interfaces.
             </h1>
             <p className="hero-copy">
-              Full-stack engineer working across web, mobile and AI-assisted workflows—turning dense requirements into secure, clear and dependable products.
+              Full-stack developer intern working across web, mobile and AI-assisted workflows—turning dense requirements into secure, clear and dependable products.
             </p>
             <div className="hero-actions">
               <a className="button button-primary" href="#projects">
@@ -162,11 +80,15 @@ export default function Home() {
                 <span className="terminal-label">identity.card</span>
                 <span className="profile-live"><span className="status-dot" aria-hidden="true" /> LIVE</span>
               </div>
+              <div className="profile-card-photo">
+                <Image src="/images/profile/tuan-kiet.jpg" alt="Tuấn Kiệt Đỗ Lê" fill sizes="(max-width: 900px) 100vw, 440px" />
+                <span>portrait / tuan kiet</span>
+              </div>
               <div className="profile-card-main">
-                <div className="profile-avatar" aria-hidden="true">TK</div>
                 <div>
-                  <strong>Tuan Kiet</strong>
-                  <span>Full-stack engineer</span>
+                  <strong>Tuấn Kiệt Đỗ Lê</strong>
+                  <span>Full-stack Developer Intern | Web, Mobile &amp; AI Systems</span>
+                  <span className="profile-location">Based in Vietnam · Open to internship opportunities</span>
                 </div>
               </div>
               <div className="profile-card-grid">
@@ -183,7 +105,7 @@ export default function Home() {
               </div>
               <div className="terminal-body">
                 <div className="terminal-line"><strong>whoami</strong></div>
-                <div className="terminal-line">&gt; tuan.kiet / full-stack engineer</div>
+                <div className="terminal-line">&gt; tuan.kiet / full-stack developer intern</div>
                 <div className="terminal-separator">────────────────────</div>
                 <div className="terminal-line"><strong>stack --primary</strong></div>
                 <div className="terminal-line">&gt; next.js / react / typescript</div>
@@ -194,7 +116,7 @@ export default function Home() {
                 <div className="terminal-line">&gt; make complex systems feel simple.</div>
                 <div className="terminal-separator">────────────────────</div>
                 <div className="terminal-line"><strong>availability</strong></div>
-              <div className="terminal-line"><em>&gt; open to meaningful product work</em><span className="terminal-cursor" /></div>
+              <div className="terminal-line"><em>&gt; based in Vietnam / open to internship opportunities</em><span className="terminal-cursor" /></div>
               </div>
             </div>
             <div className="live-status-strip" aria-label="Live build status">
@@ -207,29 +129,34 @@ export default function Home() {
         <InteractivePortfolio projects={projects} />
 
         <section className="section shell" id="bio" aria-labelledby="bio-title">
-          <div className="section-heading">
-            <div>
-              <div className="section-kicker">/ 03 — operating principles</div>
-              <h2 id="bio-title">Good engineering should feel calm.</h2>
-            </div>
-            <p className="section-intro">Less ceremony. More signal. Better decisions in the code and in the product.</p>
-          </div>
+          <SectionHeading
+            index="03"
+            label="OPERATING PRINCIPLES"
+            title="Good engineering should feel calm."
+            titleId="bio-title"
+            intro="Less ceremony. More signal. Better decisions in the code and in the product."
+          />
           <div className="principles">
             {principles.map((principle, index) => (
-              <article className="principle" key={principle.title}>
+              <ScrollReveal as="article" className="principle" delay={index * 0.05} key={principle.title}>
                 <div className="project-kicker">0{index + 1} / principle</div>
                 <h3>{principle.title}</h3>
                 <p>{principle.description}</p>
-              </article>
+              </ScrollReveal>
             ))}
           </div>
         </section>
 
         <section className="section shell" id="contact" aria-labelledby="contact-title">
-          <div className="contact">
+          <SectionHeading
+            index="04"
+            label="CONTACT"
+            title="Let's build something scalable together."
+            titleId="contact-title"
+            intro="A direct channel for product work that benefits from clearer systems and dependable execution."
+          />
+          <ScrollReveal className="contact">
             <div className="contact-main">
-              <div className="section-kicker">/ 04 — open channel</div>
-              <h2 id="contact-title">Let&apos;s build something scalable together.</h2>
               <p className="contact-copy">Have a product surface that needs clarity, a codebase that needs structure, or a system worth making faster? Send the brief. I&apos;ll bring the first useful question.</p>
               <div className="email-row">
                 <span>doletuankiet06@gmail.com</span>
@@ -253,7 +180,7 @@ export default function Home() {
                 <span className="tag">performance</span>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </section>
       </main>
 

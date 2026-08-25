@@ -1,10 +1,15 @@
 import {
   siAxios,
+  siCplusplus,
+  siCss,
   siDocker,
   siExpo,
   siFastapi,
+  siFramer,
   siHibernate,
+  siJavascript,
   siJsonwebtokens,
+  siLucide,
   siMongodb,
   siNestjs,
   siNextdotjs,
@@ -15,6 +20,7 @@ import {
   siReact,
   siReactrouter,
   siRedis,
+  siSimpleicons,
   siSocketdotio,
   siSpringboot,
   siSpringsecurity,
@@ -29,11 +35,16 @@ import { Code2 } from "lucide-react";
 
 const iconByTag: Record<string, SimpleIcon> = {
   Axios: siAxios,
+  "C++": siCplusplus,
+  "Custom CSS": siCss,
   Docker: siDocker,
   Expo: siExpo,
   FastAPI: siFastapi,
+  "Framer Motion": siFramer,
   "JPA / Hibernate": siHibernate,
+  JavaScript: siJavascript,
   JWT: siJsonwebtokens,
+  "Lucide React": siLucide,
   MongoDB: siMongodb,
   NestJS: siNestjs,
   "Next.js": siNextdotjs,
@@ -46,6 +57,7 @@ const iconByTag: Record<string, SimpleIcon> = {
   "React Native": siReact,
   "React Router": siReactrouter,
   Redis: siRedis,
+  "Simple Icons": siSimpleicons,
   "Socket.IO": siSocketdotio,
   "Spring Boot": siSpringboot,
   "Spring Security": siSpringsecurity,
@@ -58,6 +70,10 @@ const iconByTag: Record<string, SimpleIcon> = {
 
 export function TechIcon({ tag, size = 12 }: { tag: string; size?: number }) {
   const icon = iconByTag[tag];
+
+  if (tag === "Java") {
+    return <span className="tech-icon tech-icon-java" aria-hidden="true" style={{ width: size, height: size }} />;
+  }
 
   return (
     <span className="tech-icon" aria-hidden="true" style={icon ? { color: `#${icon.hex}` } : undefined}>

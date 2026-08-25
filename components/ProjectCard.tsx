@@ -1,30 +1,23 @@
 "use client";
 
 import { ChevronRight, ExternalLink, X } from "lucide-react";
-import { useEffect, useState, type KeyboardEvent as ReactKeyboardEvent, type MouseEvent as ReactMouseEvent } from "react";
+import Image from "next/image";
+import { useEffect, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { TechBadge } from "@/components/TechBadge";
+import type { ProjectCardData } from "@/lib/projects";
 
-export type ProjectCardData = {
-  number: string;
-  title: string;
-  kicker: string;
-  description: string;
-  role: string;
-  period: string;
-  outcome: string;
-  tags: string[];
-  nodes: string[];
-  flow: Array<{ label: string; detail: string }>;
-  link?: string;
-  linkLabel?: string;
-};
-
-function ProjectImageSlot({ title, modal = false }: { title: string; modal?: boolean }) {
+function ProjectImageSlot({ title, image, modal = false }: { title: string; image?: ProjectCardData["image"]; modal?: boolean }) {
   return (
-    <div className={`project-image-slot ${modal ? "modal-project-image" : ""}`} role="img" aria-label={`${title} visual placeholder`}>
+    <div className={`project-image-slot ${modal ? "modal-project-image" : ""}`} role="img" aria-label={`${title} project visual`}>
       <span className="project-image-grid" aria-hidden="true" />
-      <span className="project-image-label">IMAGE_SLOT / {title.toUpperCase()}</span>
-      <span className="project-image-note">Drop approved product visual here</span>
+      {image ? (
+        <Image className="project-image-media" src={image.src} alt={image.alt} fill sizes={modal ? "(max-width: 680px) 100vw, 900px" : "(max-width: 680px) 100vw, 50vw"} style={{ objectPosition: image.objectPosition ?? "center" }} />
+      ) : (
+        <>
+          <span className="project-image-label">IMAGE_SLOT / {title.toUpperCase()}</span>
+          <span className="project-image-note">Drop approved product visual here</span>
+        </>
+      )}
     </div>
   );
 }
@@ -45,31 +38,59 @@ function ProjectSystemPreview({ title, nodes }: { title: string; nodes: string[]
 export function ProjectCard({ project, activeSkill, onSkillSelect }: { project: ProjectCardData; activeSkill?: string | null; onSkillSelect?: (skill: string) => void }) {
   const [isOpen, setIsOpen] = useState(false);
   const [previewMode, setPreviewMode] = useState<"ui" | "system">("ui");
+  const [previewTabFocus, setPreviewTabFocus] = useState<"ui" | "system">("ui");
+  const cardTriggerRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const uiTabRef = useRef<HTMLButtonElement>(null);
+  const systemTabRef = useRef<HTMLButtonElement>(null);
   const isSkillMatch = !activeSkill || project.tags.includes(activeSkill);
 
-  const handleCardClick = (event: ReactMouseEvent<HTMLElement>) => {
-    if ((event.target as HTMLElement).closest("a, button")) return;
+  const openModal = () => {
+    returnFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : cardTriggerRef.current;
     setIsOpen(true);
   };
 
-  const handleCardKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
-    if (event.target !== event.currentTarget) return;
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      setIsOpen(true);
-    }
+  const handlePreviewKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>, current: "ui" | "system") => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+    event.preventDefault();
+    const next = current === "ui" ? "system" : "ui";
+    setPreviewMode(next);
+    setPreviewTabFocus(next);
+    requestAnimationFrame(() => (next === "ui" ? uiTabRef.current : systemTabRef.current)?.focus());
   };
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) {
+      returnFocusRef.current?.focus();
+      return;
+    }
 
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false);
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setIsOpen(false);
+        return;
+      }
+      if (event.key !== "Tab" || !modalRef.current) return;
+      const focusable = Array.from(modalRef.current.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     const previousOverflow = document.body.style.overflow;
 
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", closeOnEscape);
+    requestAnimationFrame(() => closeButtonRef.current?.focus());
 
     return () => {
       document.body.style.overflow = previousOverflow;
@@ -80,36 +101,52 @@ export function ProjectCard({ project, activeSkill, onSkillSelect }: { project: 
   return (
     <>
       <article
-        className={`project-card ${activeSkill ? (isSkillMatch ? "skill-match" : "skill-dimmed") : ""}`}
-        role="button"
-        tabIndex={0}
-        aria-label={`Open ${project.title} case study`}
+        className={`project-card project-card-${project.visualPriority ?? "compact"} ${activeSkill ? (isSkillMatch ? "skill-match" : "skill-dimmed") : ""}`}
         data-skill-match={isSkillMatch}
-        onClick={handleCardClick}
-        onKeyDown={handleCardKeyDown}
       >
+        <button className="project-card-hit-area" ref={cardTriggerRef} type="button" aria-label={`Open ${project.title} case study`} onClick={openModal} />
         <div className="project-preview">
           <div className="preview-tabs" role="tablist" aria-label={`${project.title} preview modes`}>
             <button
+              id={`project-${project.number}-ui-tab`}
+              ref={uiTabRef}
               className={`preview-tab ${previewMode === "ui" ? "active" : ""}`}
               type="button"
               role="tab"
               aria-selected={previewMode === "ui"}
+              aria-controls={`project-${project.number}-ui-panel`}
+              tabIndex={previewTabFocus === "ui" ? 0 : -1}
+              onFocus={() => setPreviewTabFocus("ui")}
+              onKeyDown={(event) => handlePreviewKeyDown(event, "ui")}
               onClick={() => setPreviewMode("ui")}
             >
               UI PREVIEW
             </button>
             <button
+              id={`project-${project.number}-system-tab`}
+              ref={systemTabRef}
               className={`preview-tab ${previewMode === "system" ? "active" : ""}`}
               type="button"
               role="tab"
               aria-selected={previewMode === "system"}
+              aria-controls={`project-${project.number}-system-panel`}
+              tabIndex={previewTabFocus === "system" ? 0 : -1}
+              onFocus={() => setPreviewTabFocus("system")}
+              onKeyDown={(event) => handlePreviewKeyDown(event, "system")}
               onClick={() => setPreviewMode("system")}
             >
               SYSTEM FLOW
             </button>
           </div>
-          {previewMode === "ui" ? <ProjectImageSlot title={project.title} /> : <ProjectSystemPreview title={project.title} nodes={project.nodes} />}
+          {previewMode === "ui" ? (
+            <div id={`project-${project.number}-ui-panel`} role="tabpanel" aria-labelledby={`project-${project.number}-ui-tab`} tabIndex={0}>
+              <ProjectImageSlot title={project.title} image={project.image} />
+            </div>
+          ) : (
+            <div id={`project-${project.number}-system-panel`} role="tabpanel" aria-labelledby={`project-${project.number}-system-tab`} tabIndex={0}>
+              <ProjectSystemPreview title={project.title} nodes={project.nodes} />
+            </div>
+          )}
         </div>
         <div className="project-copy">
           <div className="project-kicker">{project.number} / {project.kicker}</div>
@@ -141,26 +178,47 @@ export function ProjectCard({ project, activeSkill, onSkillSelect }: { project: 
           }}
         >
           <section
+            ref={modalRef}
             className="project-modal"
             role="dialog"
             aria-modal="true"
             aria-labelledby={`project-modal-title-${project.number}`}
+            aria-describedby={`project-modal-description-${project.number}`}
           >
             <div className="modal-bar">
               <span className="modal-bar-label">case_study_{project.number.toLowerCase()}</span>
-              <button className="modal-close" type="button" onClick={() => setIsOpen(false)} aria-label="Close case study">
+              <button className="modal-close" ref={closeButtonRef} type="button" onClick={() => setIsOpen(false)} aria-label="Close case study">
                 <X size={17} />
               </button>
             </div>
             <div className="modal-content">
-              <ProjectImageSlot title={project.title} modal />
+              <ProjectImageSlot title={project.title} image={project.image} modal />
               <div className="modal-kicker">{project.number} / {project.kicker}</div>
               <h2 id={`project-modal-title-${project.number}`}>{project.title}</h2>
-              <p className="modal-description">{project.description}</p>
+              <p className="modal-description" id={`project-modal-description-${project.number}`}>{project.description}</p>
               <div className="project-meta modal-meta" aria-label={`${project.title} verified details`}>
                 <div><span>role</span><strong>{project.role}</strong></div>
                 <div><span>period</span><strong>{project.period}</strong></div>
                 <div><span>outcome</span><strong>{project.outcome}</strong></div>
+              </div>
+
+              <div className="modal-grid modal-grid-with-flow modal-grid-insight">
+                <div className="modal-panel">
+                  <span className="modal-label">problem / constraint</span>
+                  <p>{project.caseStudy.challenge}</p>
+                </div>
+                <div className="modal-panel">
+                  <span className="modal-label">engineering decisions</span>
+                  <ul className="modal-bullet-list">
+                    {project.caseStudy.decisions.map((decision) => <li key={decision}>{decision}</li>)}
+                  </ul>
+                </div>
+                <div className="modal-panel">
+                  <span className="modal-label">trade-offs</span>
+                  <ul className="modal-bullet-list">
+                    {project.caseStudy.tradeoffs.map((tradeoff) => <li key={tradeoff}>{tradeoff}</li>)}
+                  </ul>
+                </div>
               </div>
 
               <div className="modal-grid modal-grid-with-flow">
