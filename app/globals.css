@@ -222,8 +222,8 @@ button {
   display: grid;
   min-height: min(730px, calc(100vh - 58px));
   align-items: center;
-  gap: 42px;
-  padding: 80px 0 76px;
+  gap: 36px;
+  padding: 68px 0 64px;
   grid-template-columns: minmax(0, 1fr) minmax(340px, 0.91fr);
 }
 
@@ -261,7 +261,7 @@ button {
 
 .profile-card {
   border: 1px solid var(--line);
-  padding: 15px 17px;
+  padding: 14px 16px;
   background: linear-gradient(120deg, rgba(237, 23, 77, 0.08), transparent 55%), var(--surface-soft);
   box-shadow: 10px 10px 0 rgba(237, 23, 77, 0.035);
 }
@@ -290,21 +290,22 @@ button {
 .profile-card-main {
   justify-content: flex-start;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .profile-card-photo {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 2.15 / 1;
   overflow: hidden;
-  margin-top: 16px;
+  max-height: 210px;
+  margin-top: 14px;
   border: 1px solid var(--line);
   background: #101014;
 }
 
 .profile-card-photo img {
   object-fit: cover;
-  object-position: center 64%;
+  object-position: center 48%;
 }
 
 .profile-card-photo::after {
@@ -352,9 +353,9 @@ button {
 
 .profile-card-grid {
   display: grid;
-  margin-top: 17px;
+  margin-top: 14px;
   border-top: 1px solid var(--line-soft);
-  padding-top: 12px;
+  padding-top: 11px;
   gap: 10px;
   grid-template-columns: repeat(3, 1fr);
 }
@@ -648,10 +649,10 @@ button {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(237, 23, 77, 0.28);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.025), transparent 38%), var(--surface);
   cursor: pointer;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(237, 23, 77, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.035);
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
@@ -701,17 +702,18 @@ button {
   z-index: 2;
   inset: 0;
   height: 38%;
-  background: linear-gradient(180deg, transparent, rgba(237, 23, 77, 0.12), transparent);
+  background: linear-gradient(180deg, transparent, rgba(255, 43, 97, 0.18), transparent);
   content: "";
   opacity: 0;
   pointer-events: none;
   transform: translateY(-125%);
+  will-change: transform, opacity;
 }
 
 .project-card:hover::after,
 .project-card:focus-within::after {
   opacity: 1;
-  animation: card-scan 650ms ease-out forwards;
+  animation: card-scan 720ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes card-scan {

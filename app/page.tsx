@@ -81,7 +81,7 @@ export default function Home() {
                 <span className="profile-live"><span className="status-dot" aria-hidden="true" /> LIVE</span>
               </div>
               <div className="profile-card-photo">
-                <Image src="/images/profile/tuan-kiet.jpg" alt="Tuấn Kiệt Đỗ Lê" fill sizes="(max-width: 900px) 100vw, 440px" loading="eager" />
+                <Image src="/images/profile/tuan-kiet.jpg" alt="Tuấn Kiệt Đỗ Lê" fill sizes="(max-width: 850px) 100vw, 400px" loading="eager" />
                 <span>portrait / tuan kiet</span>
               </div>
               <div className="profile-card-main">
