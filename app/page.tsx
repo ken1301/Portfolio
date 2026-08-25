@@ -80,15 +80,17 @@ export default function Home() {
                 <span className="terminal-label">identity.card</span>
                 <span className="profile-live"><span className="status-dot" aria-hidden="true" /> LIVE</span>
               </div>
-              <div className="profile-card-photo">
-                <Image src="/images/profile/tuan-kiet.jpg" alt="Tuấn Kiệt Đỗ Lê" fill sizes="(max-width: 850px) 100vw, 400px" loading="eager" />
-                <span>portrait / tuan kiet</span>
-              </div>
-              <div className="profile-card-main">
-                <div>
-                  <strong>Tuấn Kiệt Đỗ Lê</strong>
-                  <span>Full-stack Developer Intern | Web, Mobile &amp; AI Systems</span>
-                  <span className="profile-location">Based in Vietnam · Open to internship opportunities</span>
+              <div className="profile-card-person">
+                <div className="profile-card-photo">
+                  <Image src="/images/profile/tuan-kiet.jpg" alt="Tuấn Kiệt Đỗ Lê" fill sizes="(max-width: 850px) 120px, 132px" loading="eager" />
+                  <span>portrait / tuan kiet</span>
+                </div>
+                <div className="profile-card-main">
+                  <div>
+                    <strong>Tuấn Kiệt Đỗ Lê</strong>
+                    <span>Full-stack Developer Intern | Web, Mobile &amp; AI Systems</span>
+                    <span className="profile-location">Based in Vietnam · Open to internship opportunities</span>
+                  </div>
                 </div>
               </div>
               <div className="profile-card-grid">

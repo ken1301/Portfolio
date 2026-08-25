@@ -267,6 +267,7 @@ button {
 }
 
 .profile-card-heading,
+.profile-card-person,
 .profile-card-main,
 .profile-card-grid,
 .profile-live {
@@ -287,18 +288,25 @@ button {
   letter-spacing: 0.08em;
 }
 
+.profile-card-person {
+  align-items: stretch;
+  gap: 14px;
+  margin-top: 14px;
+}
+
 .profile-card-main {
   justify-content: flex-start;
+  min-width: 0;
   gap: 12px;
-  margin-top: 12px;
+  flex: 1;
 }
 
 .profile-card-photo {
   position: relative;
-  aspect-ratio: 2.15 / 1;
+  flex: 0 0 132px;
+  width: 132px;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  max-height: 210px;
-  margin-top: 14px;
   border: 1px solid var(--line);
   background: #101014;
 }
@@ -318,12 +326,12 @@ button {
 
 .profile-card-photo span {
   position: absolute;
-  right: 11px;
-  bottom: 10px;
+  right: 7px;
+  bottom: 7px;
   z-index: 1;
   color: #f5eef0;
   font-family: var(--font-geist-mono), monospace;
-  font-size: 8px;
+  font-size: 7px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -334,7 +342,7 @@ button {
 }
 
 .profile-card-main strong {
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: -0.03em;
 }
 
@@ -1878,6 +1886,15 @@ button.tag.active {
   .live-status-strip {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .profile-card-person {
+    gap: 12px;
+  }
+
+  .profile-card-photo {
+    flex-basis: 104px;
+    width: 104px;
   }
 
   .hero-metrics,
