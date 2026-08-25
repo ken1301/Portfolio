@@ -3,7 +3,11 @@
 import { useEffect, useRef } from "react";
 
 const BASE_VELOCITY = 1;
+const FRAME_INTERVAL = 1000 / 45;
 const POINTER_RADIUS = 180;
+const POINTER_RADIUS_SQUARED = POINTER_RADIUS * POINTER_RADIUS;
+const BASE_BIT_COLOR = "rgb(198, 35, 62)";
+const ACTIVE_BIT_COLOR = "rgb(255, 92, 112)";
 
 type Particle = {
   x: number;
@@ -38,6 +42,19 @@ function createParticle(width: number, height: number, startsInViewport: boolean
     phase: Math.random() * Math.PI * 2,
     twinkleSpeed: 0.0007 + Math.random() * 0.0015,
   };
+}
+
+function resetParticle(particle: Particle, width: number, height: number, startsInViewport: boolean) {
+  const next = createParticle(width, height, startsInViewport);
+  particle.x = next.x;
+  particle.y = next.y;
+  particle.speed = next.speed;
+  particle.drift = next.drift;
+  particle.opacity = next.opacity;
+  particle.size = next.size;
+  particle.bit = next.bit;
+  particle.phase = next.phase;
+  particle.twinkleSpeed = next.twinkleSpeed;
 }
 
 export function RedBinaryRain() {
@@ -87,37 +104,51 @@ export function RedBinaryRain() {
     const resizeCanvas = () => {
       viewportWidth = window.innerWidth;
       viewportHeight = window.innerHeight;
-      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+      const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.25);
 
       canvas.width = Math.floor(viewportWidth * pixelRatio);
       canvas.height = Math.floor(viewportHeight * pixelRatio);
       canvas.style.width = `${viewportWidth}px`;
       canvas.style.height = `${viewportHeight}px`;
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      context.textAlign = "center";
+      context.textBaseline = "middle";
       context.clearRect(0, 0, viewportWidth, viewportHeight);
       resetParticles();
     };
 
-    const drawParticle = (particle: Particle, time: number, pointerStrength: number) => {
-      const distance = Math.hypot(particle.x - pointer.x, particle.y - pointer.y);
-      const proximity = Math.max(0, 1 - distance / POINTER_RADIUS) ** 2 * pointerStrength;
+    const drawParticle = (particle: Particle, time: number, pointerStrength: number, currentFontSize: { value: number }) => {
+      const offsetX = particle.x - pointer.x;
+      const offsetY = particle.y - pointer.y;
+      const distanceSquared = offsetX * offsetX + offsetY * offsetY;
+      const proximity = distanceSquared < POINTER_RADIUS_SQUARED
+        ? (1 - Math.sqrt(distanceSquared) / POINTER_RADIUS) ** 2 * pointerStrength
+        : 0;
       const twinkle = 0.8 + (Math.sin(time * particle.twinkleSpeed + particle.phase) + 1) * 0.1;
       const alpha = Math.min(0.82, particle.opacity * twinkle + proximity * 0.68);
 
-      context.font = `${particle.size}px "JetBrains Mono", monospace`;
-      context.fillStyle = `rgba(255, ${68 + Math.round(proximity * 54)}, ${88 + Math.round(proximity * 48)}, ${alpha})`;
+      if (currentFontSize.value !== particle.size) {
+        context.font = `${particle.size}px "JetBrains Mono", monospace`;
+        currentFontSize.value = particle.size;
+      }
+      context.fillStyle = proximity > 0.03 ? ACTIVE_BIT_COLOR : BASE_BIT_COLOR;
+      context.globalAlpha = alpha;
       context.fillText(particle.bit, particle.x, particle.y);
     };
 
     const drawStaticFrame = () => {
       context.clearRect(0, 0, viewportWidth, viewportHeight);
-      context.textAlign = "center";
-      context.textBaseline = "middle";
-      particles.forEach((particle) => drawParticle(particle, 0, 0));
+      const currentFontSize = { value: 0 };
+      particles.forEach((particle) => drawParticle(particle, 0, 0, currentFontSize));
+      context.globalAlpha = 1;
     };
 
     const drawFrame = (time: number) => {
-      const frameScale = Math.min((time - lastFrameTime) / 16.67, 2);
+      const elapsed = time - lastFrameTime;
+      animationFrame = window.requestAnimationFrame(drawFrame);
+      if (elapsed < FRAME_INTERVAL) return;
+
+      const frameScale = Math.min(elapsed / 16.67, 2.5);
       lastFrameTime = time;
 
       velocityMultiplier += (targetVelocityMultiplier - velocityMultiplier) * 0.09;
@@ -128,11 +159,10 @@ export function RedBinaryRain() {
 
       // Clearing every frame prevents independent particles from leaving column trails.
       context.clearRect(0, 0, viewportWidth, viewportHeight);
-      context.textAlign = "center";
-      context.textBaseline = "middle";
+      const currentFontSize = { value: 0 };
 
       particles.forEach((particle) => {
-        drawParticle(particle, time, pointer.intensity);
+        drawParticle(particle, time, pointer.intensity, currentFontSize);
 
         particle.y += BASE_VELOCITY * particle.speed * velocityMultiplier * frameScale;
         particle.x += particle.drift * frameScale;
@@ -141,11 +171,10 @@ export function RedBinaryRain() {
         if (particle.x > viewportWidth + 18) particle.x = -18;
 
         if (particle.y > viewportHeight + 18) {
-          Object.assign(particle, createParticle(viewportWidth, viewportHeight, false));
+          resetParticle(particle, viewportWidth, viewportHeight, false);
         }
       });
-
-      animationFrame = window.requestAnimationFrame(drawFrame);
+      context.globalAlpha = 1;
     };
 
     const startRendering = () => {

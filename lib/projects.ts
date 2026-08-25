@@ -32,7 +32,7 @@ export const projects = [
     role: "Full-stack developer",
     period: "Mar 2026 — ongoing",
     outcome: "Product is actively being completed and remains in development.",
-    tags: ["React Native", "Spring Boot", "FastAPI", "PostgreSQL", "Redis", "Docker"],
+    tags: ["React Native", "Spring Boot", "Java", "FastAPI", "PostgreSQL", "Redis", "Docker"],
     nodes: ["MOBILE", "CORE API", "REALTIME", "AI/OCR"],
     flow: [
       { label: "01 / mobile access", detail: "React Native provides the family-facing mobile experience." },
@@ -101,7 +101,7 @@ export const projects = [
     role: "Full-stack developer",
     period: "Mar — Jun 2026",
     outcome: "Completed as a project demo and deployed on Vercel.",
-    tags: ["React", "Vite", "Tailwind CSS", "Axios", "React Router", "Spring Boot", "Spring Security", "JPA / Hibernate", "PostgreSQL / Supabase", "JWT", "Docker", "Maven"],
+    tags: ["React", "Vite", "Tailwind CSS", "Axios", "React Router", "Spring Boot", "Java", "Spring Security", "JPA / Hibernate", "PostgreSQL / Supabase", "JWT", "Docker", "Maven"],
     nodes: ["REACT / VITE", "SPRING API", "SECURITY", "POSTGRES"],
     flow: [
       { label: "01 / client app", detail: "React and Vite render the responsive savings-book, transaction and account workflows." },

@@ -10,38 +10,33 @@ export function ScrollAwareHeader() {
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    let frame = 0;
-    let updateQueued = false;
+    const handleScroll = () => setIsScrolled((current) => {
+      const next = window.scrollY > 24;
+      return current === next ? current : next;
+    });
 
-    const updateHeader = () => {
-      setIsScrolled(window.scrollY > 24);
+    const sectionObserver = new IntersectionObserver(
+      (entries) => {
+        const visibleSection = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
 
-      const currentSection = sections.reduce((current, section) => {
-        const element = document.getElementById(section);
-        return element && element.getBoundingClientRect().top <= window.innerHeight * 0.35
-          ? section
-          : current;
-      }, "");
+        if (visibleSection) setActiveSection(visibleSection.target.id);
+      },
+      { rootMargin: "-35% 0px -55% 0px", threshold: [0, 0.1] },
+    );
 
-      setActiveSection(currentSection);
-    };
+    sections.forEach((section) => {
+      const element = document.getElementById(section);
+      if (element) sectionObserver.observe(element);
+    });
 
-    updateHeader();
-
-    const handleScroll = () => {
-      if (updateQueued) return;
-      updateQueued = true;
-      frame = window.requestAnimationFrame(() => {
-        updateQueued = false;
-        updateHeader();
-      });
-    };
-
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      window.cancelAnimationFrame(frame);
       window.removeEventListener("scroll", handleScroll);
+      sectionObserver.disconnect();
     };
   }, []);
 

@@ -22,6 +22,31 @@
 html {
   scroll-behavior: smooth;
   background: var(--bg);
+  scrollbar-color: rgba(237, 23, 77, 0.72) var(--bg);
+  scrollbar-width: thin;
+}
+
+html::-webkit-scrollbar,
+.project-modal::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track,
+.project-modal::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+html::-webkit-scrollbar-thumb,
+.project-modal::-webkit-scrollbar-thumb {
+  border: 2px solid var(--bg);
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 43, 97, 0.86), rgba(126, 14, 45, 0.92));
+}
+
+html::-webkit-scrollbar-thumb:hover,
+.project-modal::-webkit-scrollbar-thumb:hover {
+  background: var(--crimson-bright);
 }
 
 body {
@@ -37,7 +62,6 @@ body {
     var(--bg);
   font-family: var(--font-geist-sans), Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
-  background-attachment: fixed;
 }
 
 .red-binary-rain {
@@ -49,6 +73,8 @@ body {
   height: 100vh;
   opacity: 0.9;
   pointer-events: none;
+  contain: strict;
+  will-change: transform;
 }
 
 a {
@@ -99,14 +125,14 @@ button {
   top: 0;
   border-bottom: 1px solid transparent;
   background: transparent;
-  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease, backdrop-filter 220ms ease;
+  transition: background 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
 .topbar-scrolled {
   border-bottom-color: var(--line);
   background: rgba(11, 11, 13, 0.88);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(10px);
 }
 
 .topbar-inner {
@@ -685,7 +711,7 @@ button {
 .project-card:hover::after,
 .project-card:focus-within::after {
   opacity: 1;
-  animation: card-scan 900ms ease forwards;
+  animation: card-scan 650ms ease-out forwards;
 }
 
 @keyframes card-scan {
@@ -1265,9 +1291,20 @@ button.tag.active {
   width: min(760px, 100%);
   max-height: min(720px, calc(100vh - 44px));
   overflow: auto;
+  scrollbar-color: rgba(237, 23, 77, 0.76) var(--surface);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: 18px 18px 0 rgba(237, 23, 77, 0.07);
+}
+
+.project-modal::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+.project-modal::-webkit-scrollbar-thumb {
+  border-color: var(--surface);
 }
 
 .modal-bar {
