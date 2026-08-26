@@ -14,10 +14,10 @@ type ScrollRevealProps = {
 export function ScrollReveal({ children, className, delay = 0, as = "div" }: ScrollRevealProps) {
   const motionProps = {
     className,
-    initial: { opacity: 0, y: 30 },
+    initial: { opacity: 0, y: 16 },
     whileInView: { opacity: 1, y: 0 },
     viewport: scrollViewport,
-    transition: { duration: 0.5, delay, ease: revealEase },
+    transition: { duration: 0.34, delay, ease: revealEase },
   };
 
   return (

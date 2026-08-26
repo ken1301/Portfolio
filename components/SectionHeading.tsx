@@ -5,7 +5,7 @@ import { fadeRiseReveal, revealEase, scrollViewport } from "@/lib/motion";
 
 const lineReveal = {
   hidden: { scaleX: 0 },
-  visible: { scaleX: 1, transition: { duration: 0.5, delay: 0.05, ease: revealEase } },
+  visible: { scaleX: 1, transition: { duration: 0.34, delay: 0.02, ease: revealEase } },
 };
 
 type SectionHeadingProps = {

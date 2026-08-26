@@ -10,15 +10,15 @@ import type { ProjectCardData } from "@/lib/projects";
 
 const skillGrid = {
   hidden: { opacity: 1 },
-  visible: { transition: { staggerChildren: 0.05 } },
+  visible: { transition: { staggerChildren: 0.02 } },
 };
 
 const technologyBlockReveal = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.5, delayChildren: 0.05, staggerChildren: 0.05, ease: revealEase },
+    transition: { duration: 0.34, delayChildren: 0.02, staggerChildren: 0.02, ease: revealEase },
   },
 };
 

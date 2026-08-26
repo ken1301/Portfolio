@@ -134,7 +134,7 @@ export default function Home() {
           />
           <div className="principles">
             {principles.map((principle, index) => (
-              <ScrollReveal as="article" className="principle" delay={index * 0.05} key={principle.title}>
+              <ScrollReveal as="article" className="principle" delay={index * 0.02} key={principle.title}>
                 <div className="project-kicker">0{index + 1} / principle</div>
                 <h3>{principle.title}</h3>
                 <p>{principle.description}</p>
